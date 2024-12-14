@@ -6,7 +6,7 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SlimeMain.unity
+    path: Assets/05. Scenes/SlimeMain.unity
     guid: 33b3eb76b84553a4091592c57c9df0fb
   m_configObjects:
     WebXR.Settings: {fileID: 11400000, guid: 27e345983f1d7554aa0c84d0f49c91ff, type: 2}

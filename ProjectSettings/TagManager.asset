@@ -12,10 +12,10 @@ TagManager:
   - Water
   - UI
   - Raymarching
-  - 
-  - 
-  - 
-  - 
+  - Grabbing
+  - Grabbable
+  - Hand
+  - HandPlayer
   - 
   - 
   - 
