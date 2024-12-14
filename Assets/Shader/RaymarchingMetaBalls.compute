@@ -1,0 +1,57 @@
+#pragma kernel CSMain
+
+// Definiere die Meta-Ball-Struktur
+struct MetaBall
+{
+    float3 position;
+    float radius;
+};
+
+// RWTexture2D für das Ergebnis
+RWTexture2D<float4> Result;
+
+// Eingabewerte
+[numthreads(8, 8, 1)]
+void CSMain(uint3 id : SV_DispatchThreadID)
+{
+    // MetaBall-Daten
+    MetaBall metaBalls[3];
+    metaBalls[0] = 
+        float3(0.0, 0.0, 0.0), 1.0;
+        metaBalls[1] = 
+            float3(2.0, 1.0, 0.0), 1.0;
+            metaBalls[2] = 
+                float3(-2.0, -1.0, 0.0), 1.0;
+
+    // Raymarching-Logik
+                float3 rayOrigin = float3(0.0, 0.0, -5.0);
+                float3 rayDir = normalize(float3(id.x - 512.0, id.y - 512.0, 512.0));
+
+                float distanceTraveled = 0.0;
+                int maxIterations = 200;
+                float epsilon = 0.01;
+                float closestDistance = 1000.0f;
+
+                for (int i = 0; i < maxIterations; i++)
+                {
+                    float3 currentPosition = rayOrigin + rayDir * distanceTraveled;
+                    closestDistance = 1000.0f;
+        
+                    for (int j = 0; j < 3; j++)
+                    {
+                        float3 diff = currentPosition - metaBalls[j].position;
+                        float dist = length(diff) - metaBalls[j].radius;
+                        closestDistance = min(closestDistance, dist);
+                    }
+
+                    if (closestDistance < epsilon)
+                    {
+                        Result[id.xy] = float4(1.0, 0.0, 0.0, 1.0); // Kollision
+                        return;
+                    }
+
+                    distanceTraveled += closestDistance;
+                }
+
+                Result[id.xy] = float4(0.0, 0.0, 0.0, 1.0); // Hintergrund
+            }
